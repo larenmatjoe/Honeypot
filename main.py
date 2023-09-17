@@ -50,4 +50,17 @@ class deepPacket:                       #packet monitoring class
                 pass
         except ValueError:
             pass
+
+class servers:          #code not tested
+    def telnet():
+        server = socket.socket()
+        server.bind((ip,23))
+        server.listen(3)
+        connection , address = server.accept()
+        connection.send(b"Username: ")
+        username = connection.recv(1024)
+        connection.send(b"Password: ")
+        password = connection.recv(1024)
+        connection.send(b"Authentication Error")
+        connection.close()
 deepPacket.monitorConnections()
