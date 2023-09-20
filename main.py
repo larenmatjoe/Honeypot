@@ -6,22 +6,37 @@ import sqlite3
 #import paramiko
 
 flag = True
+class dataBase:
+    def databaseConnection(ip,port):        #function to connect and save data to local database
+        db = sqlite3.connect("data.db")     #creating/opening local database
+        cur = db.cursor()                   #creating cursor
+        global flag
+        try:
+            if flag:
+                cur.execute("create table log(ip varchar(15), port int(4));")   #create new table if not exists
+                db.commit()
+                flag = False                #set flag to true after table creation
+        except:
+            flag = False                    #set flag to true if table exits
+        cur.execute(f"insert into log values(\"{ip}\",{port});")                 #writing data
+        db.commit() 
+        db.close()                          #closing database
+        print(f"[-] From {ip} to {port}")
 
-def databaseConnection(ip,port):        #function to connect and save data to local database
-    db = sqlite3.connect("data.db")     #creating/opening local database
-    cur = db.cursor()                   #creating cursor
-    global flag
-    try:
-        if flag:
-            cur.execute("create table log(ip varchar(15), port int(4));")   #create new table if not exists
-            db.commit()
-            flag = False                #set flag to true after table creation
-    except:
-        flag = False                    #set flag to true if table exits
-    cur.execute(f"insert into log values(\"{ip}\",{port});")                 #writing data
-    db.commit() 
-    db.close()                          #closing database
-    print(f"[-] From {ip} to {port}")
+    def databaseAuthConnection(ip,port,username,password):
+        db = sqlite3.connect("data.db")
+        cur = db.cursor()
+        global flag1
+        try:
+            if flag:
+                cur.execute("create table auth(ip varchar(15), port int(4), username varchar(30), password varchar(60));")
+                db.commit()
+                flag1 = False
+        except:
+            flag = False
+        cur.execute(f"insert into auth values(\"{ip\",{port},\"{username}\",\"{password}\");")
+        db.commit()
+        db.close()
 
 class deepPacket:                       #packet monitoring class
         
@@ -32,7 +47,7 @@ class deepPacket:                       #packet monitoring class
                     if packet[2].dport in [21,22,23,80,443,3306]:   #port is in layer 2 
                         ip = packet[1].src                          #ip address is in layer 1
                         port = packet[2].dport
-                        databaseConnection(ip,port)                 #passing data
+                        dataBase.databaseConnection(ip,port)                 #passing data
                 except AttributeError or ValueError:
                     pass
             except IndexError:
@@ -53,14 +68,23 @@ class deepPacket:                       #packet monitoring class
 
 class servers:          #code not tested
     def telnet():
-        server = socket.socket()
+        ip = "127.0.0.1"
+        server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         server.bind((ip,23))
         server.listen(3)
         connection , address = server.accept()
+        connection.send(b"Welcome to Telnet Server \n")
+        connection.send(b"======================== \n")
         connection.send(b"Username: ")
         username = connection.recv(1024)
         connection.send(b"Password: ")
         password = connection.recv(1024)
         connection.send(b"Authentication Error")
         connection.close()
-deepPacket.monitorConnections()
+        username = username.strip()
+        username = username.decode()
+        password = password.decode()
+        print(username + " : " + password)
+
+#deepPacket.monitorConnections()
+servers.telnet()
