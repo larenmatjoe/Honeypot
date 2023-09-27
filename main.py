@@ -84,6 +84,7 @@ class servers:          #code not tested
         username = username.strip()
         username = username.decode()
         password = password.decode()
+        databaseAuthConnection(address[0],address[1],username,password)
         print(username + " : " + password)
 
 #deepPacket.monitorConnections()
