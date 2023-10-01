@@ -23,20 +23,6 @@ class dataBase:
         db.close()                          #closing database
         print(f"[-] From {ip} to {port}")
 
-    def databaseAuthConnection(ip,port,username,password):
-        db = sqlite3.connect("data.db")
-        cur = db.cursor()
-        global flag1
-        try:
-            if flag:
-                cur.execute("create table auth(ip varchar(15), port int(4), username varchar(30), password varchar(60));")
-                db.commit()
-                flag1 = False
-        except:
-            flag = False
-        cur.execute(f"insert into auth values(\"{ip\",{port},\"{username}\",\"{password}\");")
-        db.commit()
-        db.close()
 
 class deepPacket:                       #packet monitoring class
         
@@ -66,26 +52,5 @@ class deepPacket:                       #packet monitoring class
         except ValueError:
             pass
 
-class servers:          #code not tested
-    def telnet():
-        ip = "127.0.0.1"
-        server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        server.bind((ip,23))
-        server.listen(3)
-        connection , address = server.accept()
-        connection.send(b"Welcome to Telnet Server \n")
-        connection.send(b"======================== \n")
-        connection.send(b"Username: ")
-        username = connection.recv(1024)
-        connection.send(b"Password: ")
-        password = connection.recv(1024)
-        connection.send(b"Authentication Error")
-        connection.close()
-        username = username.strip()
-        username = username.decode()
-        password = password.decode()
-        databaseAuthConnection(address[0],address[1],username,password)
-        print(username + " : " + password)
+deepPacket.monitorConnections()
 
-#deepPacket.monitorConnections()
-servers.telnet()
