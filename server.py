@@ -16,7 +16,7 @@ def authData(ip,port,username,password):
             flag1 = False
     except:
         flag = False
-        cur.execute(f"insert into auth values(\"{ip\",{port},\"{username}\",\"{password}\");")
+        cur.execute(f"insert into auth values(\"{ip}\",{port},\"{username}\",\"{password}\");")
         db.commit()
         db.close()
 
