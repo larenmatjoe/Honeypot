@@ -3,3 +3,4 @@ Just a simple Honeypot.
 
 Requirements:
     -scapy
+    -paramiko
