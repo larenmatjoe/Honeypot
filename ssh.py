@@ -19,9 +19,9 @@ def authData(username,password):
             flag1 = False
     except:
         flag = False
-        cur.execute(f"insert into auth values(\"{ip_addr}\",22,\"{username}\",\"{password}\");")
-        db.commit()
-        db.close()
+    cur.execute(f"insert into auth values(\"{ip_addr}\",22,\"{username}\",\"{password}\");")
+    db.commit()
+    db.close()
 
 
 def check_auth(username, password):
@@ -49,10 +49,8 @@ server_socket.bind(("0.0.0.0", 2222))  # Change the IP and port as needed
 server_socket.listen(5)
 
 print("Listening for SSH connections on port 2222...")
-
 while True:
     client_socket, addr = server_socket.accept()
-    global ip_addr
     ip_addr = addr[0]
     transport = paramiko.Transport(client_socket)
     transport.set_gss_host(socket.getfqdn(""))
