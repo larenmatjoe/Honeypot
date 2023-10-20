@@ -51,6 +51,8 @@ class deepPacket:                       #packet monitoring class
                 pass
         except ValueError:
             pass
-
-deepPacket.monitorConnections()
+try:
+    deepPacket.monitorConnections()
+except KeyboardInterrupt:
+    exit(0)
 
