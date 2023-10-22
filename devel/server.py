@@ -13,7 +13,7 @@ def authData(ip,port,username,password):
         if flag:
             cur.execute("create table auth(ip varchar(15), port int(4), username varchar(30), password varchar(60));")
             db.commit()
-            flag1 = False
+            flag = False
     except:
         flag = False
     cur.execute(f"insert into auth values(\"{ip}\",22,\"{username}\",\"{password}\");")
@@ -22,9 +22,9 @@ def authData(ip,port,username,password):
 
 class server:
     def telnet() :
-        ip = "127.0.0.1"
+        #ip = "127.0.0.1"
         server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        server.bind((ip,2323))
+        server.bind(("",2323))
         server.listen(2)
         while True:
             #server.listen(3)
@@ -43,7 +43,6 @@ class server:
             authData(address[0],address[1],username,password)
             if username not in ["admin","Admin","root","administrator"]:
                 connection.send(b"Connection revoked: INVALID UESRNAME")
-                connection.close()
             else:
                 connection.send(b"Connection refused : WRONG PASSWORD")
             connection.shutdown(socket.SHUT_RDWR)
