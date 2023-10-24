@@ -18,13 +18,14 @@ def authData(ip,port,username,password):
             flag1 = False
     except:
         flag = False
+    print(f"IP : {ip} PORT : {port} Username : {username} PASS : {password}")
     cur.execute(f"insert into auth values(\"{ip}\",{port},\"{username}\",\"{password}\");")
     db.commit()
     db.close()
 
 
 def check_auth(username, password):
-    print("[+] Connection to SSH : ",username,password,'\n')
+   # print("[+] Connection to SSH : ",username,password,'\n')
     authData(ip_addr,22,username,password)
     return True
 
