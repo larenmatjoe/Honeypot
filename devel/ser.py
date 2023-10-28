@@ -94,23 +94,5 @@ while True:
 
     chan = transport.accept(20)
 
-    if chan is None:
-        print("SSH negotiation failed.")
-        transport.close()
-    else:
-        print("Authenticated!")
-
-        # Handle the SSH session here
-        chan.send("Welcome to my SSH server!\n")
-        chan.send("Type 'exit' to close the connection.\n")
-
-        while True:
-            data = chan.recv(1024)
-            if not data:
-                break
-            if data.strip() == "exit":
-                break
-            chan.send("You typed: " + data)
-
-        chan.close()
-        transport.close() 
+    print("SSH negotiation failed.")
+    transport.close()
