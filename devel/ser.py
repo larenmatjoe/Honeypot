@@ -74,7 +74,7 @@ class server:           #telnet server
 # Create a socket to listen for incoming SSH connections
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_socket.bind(("0.0.0.0", 2222))  # Change the IP and port as needed
+server_socket.bind(("", 2222))  # Change the IP and port as needed
 server_socket.listen(5)
 
 t = threading.Thread(target = server.telnet, args = "")   #creating a new thread for telnet sever
